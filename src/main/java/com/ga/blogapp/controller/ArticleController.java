@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ga.blogapp.dao.ArticleDao;
 import com.ga.blogapp.dao.AuthorDao;
-import com.ga.blogapp.model.Author;
+import com.ga.blogapp.model.Article;
 
 @Controller
-public class AuthorController {
-	
-	// User dont have account -> can only view
-	// User with account + Admin role -> CRUD Operations
-	// User with account + User role -> CRUD Operation without delete
+public class ArticleController {
 	
 
 	//CRUD OPERATIONS
-	// C -> Create = done
-	// R -> Select = done
-	// U -> Update = done
-	// D -> Delete =  done
+	// C -> Create = Done
+	// R -> Select = Done
+	// U -> Update = Done
+	// D -> Delete = Done
 	
 	@Autowired 
 	private Environment env;
+	
+	@Autowired
+	private AuthorDao authordao;
 	
 	@Autowired
 	private UserController uc;
@@ -37,14 +37,18 @@ public class AuthorController {
 	@Autowired
 	HttpServletRequest request;
 	
-	// HTTP GET REQUEST - Author Add
-	@GetMapping("/author/add")
-	public ModelAndView addAuthor() {
+	// HTTP GET REQUEST - Article Add
+	@GetMapping("/article/add")
+	public ModelAndView addArticle() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("author/add");
+		mv.setViewName("article/add");
 		
 		HomeController hc = new HomeController();
 		hc.setAppName(mv, env);
+		
+		var it = authordao.findAll();
+		mv.addObject("authors", it);
+		
 		
 		if(!uc.isUserLoggedIn())
 		{
@@ -55,24 +59,24 @@ public class AuthorController {
 	}
 	
 	@Autowired
-	private AuthorDao dao;
+	private ArticleDao dao;
 	
-	// HTTP POST REQUEST - Author Add
-	@PostMapping("/author/add")
-	public String addAuthor(Author author) {
-		dao.save(author);
+	// HTTP POST REQUEST - Article Add
+	@PostMapping("/article/add")
+	public String addArticle(Article article) {
+		dao.save(article);
 		
-		return "redirect:/author/index";
+		return "redirect:/article/index";
 	}
 	
-	// HTTP GET REQUEST - Author Index
-	@GetMapping("/author/index")
-	public ModelAndView getAuthor() {
+	// HTTP GET REQUEST - Article Index
+	@GetMapping("/article/index")
+	public ModelAndView getArticle() {
 		var it = dao.findAll();
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("author/index");
-		mv.addObject("authors", it);
+		mv.setViewName("article/index");
+		mv.addObject("articles", it);
 		
 		HomeController hc = new HomeController();
 		hc.setAppName(mv, env);
@@ -80,16 +84,16 @@ public class AuthorController {
 		return mv;
 	}
 	
-	// HTTP GET REQUEST - Author Detail
-	@GetMapping("/author/detail")
-	public ModelAndView authorDetails(@RequestParam int id) {
+	// HTTP GET REQUEST - Article Detail
+	@GetMapping("/article/detail")
+	public ModelAndView articleDetails(@RequestParam int id) {
 		System.out.println(id);
 		
-		Author author = dao.findById(id);
+		Article article = dao.findById(id);
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("author/detail");
-		mv.addObject("author", author);
+		mv.setViewName("article/detail");
+		mv.addObject("article", article);
 		
 		HomeController hc = new HomeController();
 		hc.setAppName(mv, env);
@@ -98,42 +102,47 @@ public class AuthorController {
 		
 	}
 	
-	// HTTP GET REQUEST - Author Edit
-	@GetMapping("/author/edit")
-	public ModelAndView editAuthor(@RequestParam int id) {
-		Author author = dao.findById(id);
+	// HTTP GET REQUEST - Article Edit
+	@GetMapping("/article/edit")
+	public ModelAndView editArticle(@RequestParam int id) {
+		Article article = dao.findById(id);
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("author/edit");
-		mv.addObject("author", author);
+		mv.setViewName("article/edit");
+		mv.addObject("article", article);
 		
 		HomeController hc = new HomeController();
 		hc.setAppName(mv, env);
+		
+		var it = authordao.findAll();
+		mv.addObject("authors", it);
 		
 		if(!uc.isUserLoggedIn())
 		{
 			mv.setViewName("home/index");
 		}
 		
+		
 		return mv;
 	}
 	
-	// HTTP GET REQUEST - Author Delete
-	@GetMapping("/author/delete")
-	public String deleteAuthor(@RequestParam int id) {
+	// HTTP GET REQUEST - Article Delete
+	@GetMapping("/article/delete")
+	public String deleteArticle(@RequestParam int id) {
 		
 		HttpSession session = request.getSession();
+
 		if(!uc.isUserLoggedIn())
 		{
 			return "redirect:/";
 		}
 		else if(session.getAttribute("userRole").equals("user"))
 		{
-			return "redirect:/author/index";
+			return "redirect:/article/index";
 		}
 		
 		dao.deleteById(id);
-		return "redirect:/author/index";
+		return "redirect:/article/index";
 	}
 	
 	
