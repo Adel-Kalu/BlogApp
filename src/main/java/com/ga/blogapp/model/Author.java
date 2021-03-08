@@ -2,6 +2,7 @@ package com.ga.blogapp.model;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -24,7 +25,10 @@ public class Author {
 	
 	private Date dateofBirth;
 	
-	private String article;
+//	private String article;
+	
+	@OneToMany(mappedBy="author")
+	private Set<Article> articles;
 	
 	@Column(name="createdAt", nullable = false, updatable = false)
 	@CreationTimestamp
@@ -33,6 +37,16 @@ public class Author {
 	@Column(name="updatedat", nullable = false, updatable = true)
 	@UpdateTimestamp
 	private LocalDateTime updateAt;
+	
+	
+
+	public Set<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
+	}
 
 	public int getId() {
 		return id;
@@ -74,13 +88,13 @@ public class Author {
 		this.dateofBirth = dateofBirth;
 	}
 
-	public String getArticle() {
-		return article;
-	}
-
-	public void setArticle(String article) {
-		this.article = article;
-	}
+//	public String getArticle() {
+//		return article;
+//	}
+//
+//	public void setArticle(String article) {
+//		this.article = article;
+//	}
 
 	public LocalDateTime getCreateAt() {
 		return createAt;

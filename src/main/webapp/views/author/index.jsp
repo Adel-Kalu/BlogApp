@@ -2,14 +2,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../shared/_layout.jsp" />
 
-<table>
+<table class="table table-striped">
 
 	<tr>
 		<th>Author Name</th>
 		<th>Email Address</th>
 		<th>Gender</th>
 		<th>Date of Birth</th>
-		<th>Article</th>
+		<!-- <th>Article</th> -->
 		<th>Actions</th>
 	</tr>
 
@@ -19,7 +19,7 @@
 			<td>${author.emailAddress}</td>
 			<td>${author.gender}</td>
 			<td>${author.dateofBirth}</td>
-			<td>${author.article}</td>
+			<%-- <td>${author.article}</td> --%>
 
 			<td><a href="${appName}author/edit?id=${author.id}">Edit</a> | <a
 				href="${appName}author/delete?id=${author.id}">Delete</a></td>

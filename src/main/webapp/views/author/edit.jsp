@@ -18,9 +18,9 @@
 		<label>Date of Birth </label> <input type="date" name="dateofBirth"  value="${author.dateofBirth}">
 	</div>
 
-	<div>
+<%-- 	<div>
 		<label>Article </label> <input type="text" name="article"  value="${author.article}">
-	</div>
+	</div> --%>
 	
 	<input name="id" type="hidden" value="${author.id}">
 	
