@@ -1,6 +1,5 @@
 package com.ga.blogapp.model;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -14,26 +13,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="Author")
-public class Author {
+@Table(name="Article")
+public class Article {
 	@Id
 	@GeneratedValue
 	private int id;
 	
-	private String name;
+	private String title;
 	
-	private String emailAddress;
+	private String description;
 	
-	@Column(length = 50)
-	private String gender;
-	
-	private Date dateofBirth;
-	
-//	private String article;
 
-	
-	@ManyToMany(mappedBy="authors")
-	private Set<Article> articles;
+	@JsonBackReference	
+	@ManyToMany
+	@JoinTable(name = "author_articles",
+				joinColumns = { @JoinColumn(name = "article_id") },
+				inverseJoinColumns = { @JoinColumn(name = "author_id")})
+	private Set<Author> authors;
 	
 	@Column(name="createdAt", nullable = false, updatable = false)
 	@CreationTimestamp
@@ -42,16 +38,6 @@ public class Author {
 	@Column(name="updatedat", nullable = false, updatable = true)
 	@UpdateTimestamp
 	private LocalDateTime updateAt;
-	
-	
-
-	public Set<Article> getArticles() {
-		return articles;
-	}
-
-	public void setArticles(Set<Article> articles) {
-		this.articles = articles;
-	}
 
 	public int getId() {
 		return id;
@@ -61,45 +47,31 @@ public class Author {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getEmailAddress() {
-		return emailAddress;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getGender() {
-		return gender;
+
+
+	public Set<Author> getAuthors() {
+		return authors;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setAuthors(Set<Author> authors) {
+		this.authors = authors;
 	}
-
-	public Date getDateofBirth() {
-		return dateofBirth;
-	}
-
-	public void setDateofBirth(Date dateofBirth) {
-		this.dateofBirth = dateofBirth;
-	}
-
-//	public String getArticle() {
-//		return article;
-//	}
-//
-//	public void setArticle(String article) {
-//		this.article = article;
-//	}
 
 	public LocalDateTime getCreateAt() {
 		return createAt;
@@ -116,8 +88,6 @@ public class Author {
 	public void setUpdateAt(LocalDateTime updateAt) {
 		this.updateAt = updateAt;
 	}
-	
-	
 	
 	
 }
