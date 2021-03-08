@@ -1,0 +1,23 @@
+@charset "ISO-8859-1";
+
+body {
+	padding: 20px;
+}
+
+.homepage {
+	padding: 20px;
+	background-image: url("../images/books.jpg");
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-size: cover;
+	height: 500px;
+}
+
+.homeDiv{
+  display: flex;
+  justify-content: flex-end;	
+}
+
+.textDiv{
+padding-left: 400px;	
+}	
